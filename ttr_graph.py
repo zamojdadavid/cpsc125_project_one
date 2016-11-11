@@ -1,5 +1,7 @@
 from collections import defaultdict
 
+trainstest = []
+
 trains = [
         ['Vancouver', 'Seattle'], 
         ['Vancouver', 'Calgary'], 
@@ -22,8 +24,8 @@ trains = [
         ['Phoenix', 'Santa Fe'], 
         ['Los Angeles', 'El Paso'], 
         ['Phoenix', 'El Paso'], 
-        ['El Paso', 'Santa Fe'], 
-        ['Santa Fe', 'Denver'], 
+        ['Santa Fe', 'El Paso'], 
+        ['Denver', 'Santa Fe'], 
         ['Helena', 'Duluth'], 
         ['Helena', 'Omaha'], 
         ['Winnipeg', 'Duluth'], 
@@ -124,9 +126,11 @@ def convert_to_graph(board, trains):
     board[second_city].add(first_city)
 
 def find_path(board, first_city, second_city):
-  connected = [
-		first_city
-		]
+  connected = []
+  if first_city not in board:
+    return False
+  else:
+    connected = connected + [first_city]
   i = 0
   while (i < len(connected)):
     for city in board[connected[i]]:
@@ -134,14 +138,12 @@ def find_path(board, first_city, second_city):
         connected = connected + [city]
         i = i + 1
       else:
-        i = i + 1
-        if second_city in connected:
-          return True        
-  if second_city in connected:
-    return False
-  else:
+        i = i + 1     
+  if second_city not in connected:
     return True
-
+  else:
+    return False
+  
 def calculate_score(board, tickets):
   score = 0
   for ticket in tickets:
